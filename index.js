@@ -1,13 +1,19 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const app = express();
+const connectDB = require("./config/db");
+const colors = require('colors');
 const trainings = require("./routes/trainings")
 const logger = require("./middleware/logger");
 
 // load config before use
 dotenv.config({path : "./config/config.env"});
 
-//testing
+
+//Connect to database
+connectDB();
+
+//testing again
 console.log(process.env.PORT)
 
 //Basic Routes 
@@ -45,4 +51,12 @@ app.use("/api/v1/trainings",trainings)
 const port = process.env.PORT || 5000;
 
 //express listening
-app.listen(port,console.log("Listening"))
+const server = app.listen(port,console.log("Listening".yellow.bold));
+
+//Handle unhandled promise rejections
+
+process.on('unhandledRejection', (err,promise) => {
+    console.log(`Error: ${err.message}.red`);
+    //close server and exit process
+    server.close(() => process.exit(1));
+})
