@@ -1,5 +1,5 @@
 const express = require("express");
-const {getTrainings, createTraining, getTraining, updateTrainings, updateTraining, deleteTraining} = require("../controllers/trainings")
+const {getTrainings, createTraining, getTraining, updateTraining, deleteTraining} = require("../controllers/trainings")
 const router = express.Router();
 
 // routes(basic) with help of Router without controllers
@@ -32,7 +32,6 @@ router.delete("/:id",(req,res) =>{
 router.route("/")
 .get(getTrainings)
 .post(createTraining)
-.put(updateTrainings)
 
 router.route("/:id")
 .get(getTraining)

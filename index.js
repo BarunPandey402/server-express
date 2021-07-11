@@ -1,13 +1,14 @@
 const express = require("express");
 const dotenv = require("dotenv");
+// load config before use
+dotenv.config({path : "./config/config.env"});
+
 const app = express();
 const connectDB = require("./config/db");
 const colors = require('colors');
-const trainings = require("./routes/trainings")
+const trainings = require("./routes/trainings");
+const errorHandler = require('./middleware/error');
 const logger = require("./middleware/logger");
-
-// load config before use
-dotenv.config({path : "./config/config.env"});
 
 
 //Connect to database
@@ -42,11 +43,15 @@ app.delete("/api/v1/trainings/:id",(req,res) =>{
 })
 */
 
+// Body parser
+app.use(express.json());
 
 // to use middleware
 app.use(logger);
 
-app.use("/api/v1/trainings",trainings)
+app.use("/api/v1/trainings",trainings);
+
+app.use(errorHandler);
 //PORT
 const port = process.env.PORT || 5000;
 
